@@ -3,11 +3,13 @@
   <h1>FROGGO: Better Stay Alive! 🐸</h1>
 </div>
 
-**FROGGO** is an advanced multi-agent reinforcement learning simulation where a **Hunter** agent learns to catch a **Prey** agent in a dynamic grid world. The project demonstrates the application of Deep Q-Networks (DQN), realistic perception systems (Raycasting), and strict software architecture principles.
+**FROGGO** is an advanced multi-agent reinforcement learning simulation where a **Hunter** agent learns to catch a **Prey** agent in a dynamic grid world. The project demonstrates the application of Deep Q-Networks (DQN), realistic perception systems (Raycasting), and strict software architecture principles. 
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![Pygame](https://img.shields.io/badge/Pygame-CE-green)
 ![PyTorch](https://img.shields.io/badge/PyTorch-DQN-red)
+
+Thanks to the https://opengameart.org/ community for the art resources!
 
 ## Key Features
 
