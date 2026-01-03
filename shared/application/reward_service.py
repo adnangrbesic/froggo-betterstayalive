@@ -8,12 +8,12 @@ class RewardService:
     H_CAUGHT_REWARD = +20.0  # Smanjeno: ulov nije vredniji od 40 koraka života žabe
     H_STAGNATION_PENALTY = -5.0
 
-    # PREY - GOD MODE (Buffed)
-    P_CAUGHT_PENALTY = -500.0  # SMRT JE APSOLUTNI PORAZ
-    P_SURVIVE_BONUS = +5.0  # Život vredi mnogo!
-    P_FARTHER_BONUS = +15.0  # OGROMAN bonus za svaki korak bežanja (oseti progres!)
-    P_CLOSER_PENALTY = -0.5  # Smanjena kazna za blizinu (da ne beži u smrt od stresa)
-    P_STAGNATION_PENALTY = -0.1
+    # PREY - NERFED (Balanced)
+    P_CAUGHT_PENALTY = -50.0  # Smanjeno sa -500 (da ne bude prevelik sok)
+    P_SURVIVE_BONUS = +0.1    # Smanjeno sa +5.0 (samo mali poticaj za zivot)
+    P_FARTHER_BONUS = +1.0    # Smanjeno sa +15.0 (bjezi, ali ne dobijaj jackpot)
+    P_CLOSER_PENALTY = -1.5   # Povecana kazna za priblizavanje (bjezi jace!)
+    P_STAGNATION_PENALTY = -0.5
 
     # GLOBAL
     REVERSING_PENALTY = -2.0
@@ -48,7 +48,7 @@ class RewardService:
         if is_reversing and prev_distance < 3: return -1.0
 
         r = self.P_SURVIVE_BONUS
-        if is_hidden and prev_distance < 5: r += 5.0  # Ninja mode je super isplativ!
+        if is_hidden and prev_distance < 5: r += 1.0  # Ninja mode (smanjeno sa 5.0)
 
         if new_distance > prev_distance:
             r += self.P_FARTHER_BONUS

@@ -58,9 +58,17 @@ class PreyAgentRunner(SoftwareAgent):
 
     def tick(self):
         if self.episode.done: return None
+        
+        # =====================================================
+        # 1. SENSE (Percepcija)
+        # =====================================================
         state = self._get_state()
         self.hunter_pos_history.append(self.hunter.position)
         is_hidden = self._is_hidden()
+        
+        # =====================================================
+        # 2. THINK (Odlučivanje)
+        # =====================================================
         action_idx = self.trainer.select_action(state)
         action = list(Action)[action_idx]
 
@@ -69,6 +77,10 @@ class PreyAgentRunner(SoftwareAgent):
             is_reversing = True
 
         prev_dist = self.world.distance(self.hunter, self.prey)
+        
+        # =====================================================
+        # 3. ACT (Djelovanje)
+        # =====================================================
         valid, bumped = self.world.move_agent(self.prey, action)
 
         if self.jump_cooldown == 0 and valid:
@@ -81,6 +93,9 @@ class PreyAgentRunner(SoftwareAgent):
         caught = self.world.check_collision(self.hunter, self.prey)
         self.last_action = action
 
+        # =====================================================
+        # 4. LEARN (Učenje)
+        # =====================================================
         reward = self.reward_service.prey_reward(
             prev_dist, new_dist, caught, valid,
             self.prey.position, self.world.grid.height,

@@ -5,12 +5,12 @@ import os
 class MetricsService:
     def __init__(self, save_path=None):
         if save_path is None:
-            # Build absolute path to host/data/stats.json
+            # Build absolute path to data/stats.json
             # This file is in shared/application/metrics_service.py
-            # We need to go up two levels to root, then into host/data
+            # We need to go up two levels to root, then into data
             base_dir = os.path.dirname(os.path.abspath(__file__))
             project_root = os.path.abspath(os.path.join(base_dir, "..", ".."))
-            self.save_path = os.path.join(project_root, "host", "data", "stats.json")
+            self.save_path = os.path.join(project_root, "data", "stats.json")
         else:
             self.save_path = save_path
             

@@ -50,6 +50,13 @@ class RetroRenderer:
         # UI Elementi
         self.btn_pause = pygame.Rect(0, 0, 0, 0)
         self.btn_exit = pygame.Rect(0, 0, 0, 0)
+        self.btn_reset = pygame.Rect(0, 0, 0, 0)
+        
+        # Dialog UI
+        self.show_reset_dialog = False
+        self.dialog_rect = pygame.Rect(0, 0, 400, 200)
+        self.btn_confirm = pygame.Rect(0, 0, 0, 0)
+        self.btn_cancel = pygame.Rect(0, 0, 0, 0)
 
         # Slider definicija
         self.slider_rect = pygame.Rect(0, 0, 200, 10)
@@ -108,22 +115,22 @@ class RetroRenderer:
         pygame.draw.line(self.screen, (100, 100, 120), (x_off, 0), (x_off, win_height), 2)
 
         # 1. LOGO
-        y = 20
+        y = 15
         if self.logo:
             logo_x = x_off + (self.SIDEBAR_WIDTH - self.logo.get_width()) // 2
             self.screen.blit(self.logo, (logo_x, y))
-            y += self.logo.get_height() + 20
+            y += self.logo.get_height() + 10
 
         # 2. GIF RESULTS
         pygame.draw.line(self.screen, (60, 60, 70), (x_off + 20, y), (x_off + self.SIDEBAR_WIDTH - 20, y), 1)
-        y += 15
+        y += 10
         if self.hunter_sprite: self.screen.blit(self.hunter_sprite.get_frame(), (x_off + 30, y - 5))
         self.screen.blit(self.font.render(f"HUNTER WINS: {metrics.hunter_wins}", True, (255, 150, 150)),
                          (x_off + 85, y))
-        y += 45
+        y += 35
         if self.prey_sprite: self.screen.blit(self.prey_sprite.get_frame(), (x_off + 30, y - 5))
         self.screen.blit(self.font.render(f"PREY WINS: {metrics.prey_wins}", True, (150, 255, 150)), (x_off + 85, y))
-        y += 55
+        y += 45
 
         # 3. STATISTIKA
         stats = [
@@ -136,12 +143,10 @@ class RetroRenderer:
         ]
         for text, col in stats:
             self.screen.blit(self.font.render(text, True, col), (x_off + 30, y))
-            y += 28
+            y += 24
 
         # 4. SLIDER (Pomjeren malo niže)
         y += 10
-        # self.screen.blit(self.small_font.render("SIMULATION SPEED CONTROL:", True, (150, 150, 150)), (x_off + 30, y))
-        #y += 20
         self.slider_rect.topleft = (x_off + 30, y)
         pygame.draw.rect(self.screen, (60, 60, 70), self.slider_rect, border_radius=5)
         # Izračunaj poziciju ručke na osnovu simulation_speed (1 do 100)
@@ -149,25 +154,67 @@ class RetroRenderer:
         self.slider_handle_rect.center = (handle_x, self.slider_rect.centery)
         pygame.draw.rect(self.screen, (100, 255, 100), self.slider_handle_rect, border_radius=3)
 
-        # 5. GUMBOVI
-        y = win_height - 160
-        # self.btn_pause = pygame.Rect(x_off + 30, y, 140, 35)
-       #  self.btn_exit = pygame.Rect(x_off + 180, y, 140, 35)
-      #  self._draw_button(self.btn_pause, "PAUSE" if not paused else "RESUME", (100, 100, 255))
-       # self._draw_button(self.btn_exit, "EXIT", (200, 50, 50))
+        # 5. GUMBOVI (Dynamic positioning)
+        y += 35
+        self.btn_reset = pygame.Rect(x_off + 30, y, 290, 35)
+        self._draw_button(self.btn_reset, "RESET LEARNING (DELETE DATA)", (255, 80, 80))
 
-        # 6. EVENT LOG
-        y = win_height - 100
+        # 6. EVENT LOG (Dynamic positioning)
+        y += 45
         pygame.draw.line(self.screen, (60, 60, 70), (x_off + 20, y), (x_off + self.SIDEBAR_WIDTH - 20, y), 1)
         y += 10
         self.screen.blit(self.small_font.render("EVENT LOG:", True, (150, 150, 150)), (x_off + 30, y))
         y += 20
-        for log in logs:
+        
+        # Calculate remaining space for logs
+        remaining_height = win_height - y - 10
+        max_logs = max(0, remaining_height // 18)
+        
+        for i, log in enumerate(logs):
+            if i >= max_logs: break
             self.screen.blit(self.small_font.render(log, True, (130, 130, 140)), (x_off + 30, y))
             y += 18
 
-    def _draw_button(self, rect, text, color):
-        pygame.draw.rect(self.screen, color, rect, 2, border_radius=5)
-        txt_img = self.small_font.render(text, True, color)
+    def draw_reset_dialog(self):
+        if not self.show_reset_dialog: return
+        
+        # Overlay
+        overlay = pygame.Surface(self.screen.get_size(), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 180))
+        self.screen.blit(overlay, (0, 0))
+        
+        # Dialog Box
+        cx, cy = self.screen.get_width() // 2, self.screen.get_height() // 2
+        self.dialog_rect.center = (cx, cy)
+        pygame.draw.rect(self.screen, (40, 40, 45), self.dialog_rect, border_radius=10)
+        pygame.draw.rect(self.screen, (255, 80, 80), self.dialog_rect, 2, border_radius=10)
+        
+        # Text
+        msg1 = self.font.render("Are you sure you wanna reset", True, (255, 255, 255))
+        msg2 = self.font.render("the Agent learning process?", True, (255, 255, 255))
+        msg3 = self.small_font.render("This will DELETE all checkpoints and stats!", True, (255, 100, 100))
+        
+        self.screen.blit(msg1, msg1.get_rect(center=(cx, cy - 50)))
+        self.screen.blit(msg2, msg2.get_rect(center=(cx, cy - 25)))
+        self.screen.blit(msg3, msg3.get_rect(center=(cx, cy + 10)))
+        
+        # Buttons
+        self.btn_confirm = pygame.Rect(0, 0, 120, 40)
+        self.btn_cancel = pygame.Rect(0, 0, 120, 40)
+        self.btn_confirm.bottomleft = (self.dialog_rect.left + 40, self.dialog_rect.bottom - 20)
+        self.btn_cancel.bottomright = (self.dialog_rect.right - 40, self.dialog_rect.bottom - 20)
+        
+        self._draw_button(self.btn_confirm, "YES, RESET", (255, 50, 50), fill=True)
+        self._draw_button(self.btn_cancel, "CANCEL", (100, 100, 100), fill=True)
+
+    def _draw_button(self, rect, text, color, fill=False):
+        if fill:
+            pygame.draw.rect(self.screen, color, rect, border_radius=5)
+            txt_col = (255, 255, 255)
+        else:
+            pygame.draw.rect(self.screen, color, rect, 2, border_radius=5)
+            txt_col = color
+            
+        txt_img = self.small_font.render(text, True, txt_col)
         txt_rect = txt_img.get_rect(center=rect.center)
         self.screen.blit(txt_img, txt_rect)

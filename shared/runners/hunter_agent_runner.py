@@ -93,9 +93,15 @@ class HunterAgentRunner(SoftwareAgent):
     def tick(self):
         if self.episode.done: return None
 
+        # =====================================================
+        # 1. SENSE (Percepcija)
+        # =====================================================
         state = self._get_state()
         self.prey_pos_history.append(self.prey.position)
         
+        # =====================================================
+        # 2. THINK (Odlučivanje)
+        # =====================================================
         action_idx = self.trainer.select_action(state)
         action = list(Action)[action_idx]
 
@@ -108,6 +114,9 @@ class HunterAgentRunner(SoftwareAgent):
         prev_real_dist = self.world.real_path_distance(self.hunter.position, self.prey.position)
         old_pos = self.hunter.position 
 
+        # =====================================================
+        # 3. ACT (Djelovanje)
+        # =====================================================
         valid, bumped = self.world.move_agent(self.hunter, action)
 
         new_pos = self.hunter.position
@@ -139,6 +148,9 @@ class HunterAgentRunner(SoftwareAgent):
         self.pos_history.append(new_pos)
         self.last_action = action
 
+        # =====================================================
+        # 4. LEARN (Učenje)
+        # =====================================================
         reward = self.reward_service.hunter_reward(
             prev_real_dist, new_real_dist, caught, not pos_stagnation,
             new_pos, self.world.grid.height,

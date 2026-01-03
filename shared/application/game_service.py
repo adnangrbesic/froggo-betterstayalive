@@ -7,7 +7,7 @@ from shared.application.episode_service import EpisodeService
 from shared.ml.dqn_trainer import DQNTrainer
 from shared.runners.hunter_agent_runner import HunterAgentRunner
 from shared.runners.prey_agent_runner import PreyAgentRunner
-from data.logs import GameLogger
+from shared.infrastructure.game_logger import GameLogger
 
 class GameService:
     def __init__(self, grid_size, max_steps, hunter_checkpoint, prey_checkpoint):
@@ -49,3 +49,29 @@ class GameService:
 
     def update(self, simulation_speed, paused, walls_count, pallets_count):
         return self.episode_service.update_simulation(simulation_speed, paused, walls_count, pallets_count, self.logger)
+
+    def reset_learning(self, walls_count, pallets_count):
+        import os
+        
+        # 1. Delete Checkpoints
+        if self.h_trainer.checkpoint_path and os.path.exists(self.h_trainer.checkpoint_path):
+            try: os.remove(self.h_trainer.checkpoint_path)
+            except: pass
+        if self.p_trainer.checkpoint_path and os.path.exists(self.p_trainer.checkpoint_path):
+            try: os.remove(self.p_trainer.checkpoint_path)
+            except: pass
+            
+        # 2. Delete Stats
+        if self.metrics.save_path and os.path.exists(self.metrics.save_path):
+            try: os.remove(self.metrics.save_path)
+            except: pass
+            
+        # 3. Reset In-Memory State
+        self.metrics.reset()
+        self.h_trainer.reset_training()
+        self.p_trainer.reset_training()
+        
+        # 4. Start Fresh Episode
+        self.episode_service.episode.reset()
+        self.start_new_episode(walls_count, pallets_count)
+        self.logger.log("SYSTEM: Learning Reset Complete!")

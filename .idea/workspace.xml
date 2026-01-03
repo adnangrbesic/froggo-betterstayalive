@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="965f7309-32e8-418b-bc12-75c2d8be48a8" name="Changes" comment="" />
+    <list default="true" id="965f7309-32e8-418b-bc12-75c2d8be48a8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/host/data/stats.json" beforeDir="false" afterPath="$PROJECT_DIR$/host/data/stats.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/runners/hunter_agent_runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/shared/runners/hunter_agent_runner.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/runners/prey_agent_runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/shared/runners/prey_agent_runner.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,6 +22,9 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -25,24 +33,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.dqn_trainer.executor": "Run",
-    "Python.episode_state.executor": "Debug",
-    "Python.grid_world.executor": "Run",
-    "Python.hunter_agent_runner.executor": "Debug",
-    "Python.main.executor": "Run",
-    "Python.metrics_service.executor": "Run",
-    "Python.pygame_ui.executor": "Run",
-    "Python.replay_buffer.executor": "Run",
-    "Python.reward_service.executor": "Run",
-    "Python.scripted_hunter_runner.executor": "Run",
-    "Python.world_step_service.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/Omen/Documents/hunter_prey_ai/host/assets"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.dqn_trainer.executor&quot;: &quot;Run&quot;,
+    &quot;Python.episode_state.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.grid_world.executor&quot;: &quot;Run&quot;,
+    &quot;Python.hunter_agent_runner.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.metrics_service.executor&quot;: &quot;Run&quot;,
+    &quot;Python.pygame_ui.executor&quot;: &quot;Run&quot;,
+    &quot;Python.replay_buffer.executor&quot;: &quot;Run&quot;,
+    &quot;Python.reward_service.executor&quot;: &quot;Run&quot;,
+    &quot;Python.scripted_hunter_runner.executor&quot;: &quot;Run&quot;,
+    &quot;Python.world_step_service.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Omen/Documents/hunter_prey_ai/host/assets&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Omen\Documents\hunter_prey_ai\host\assets" />

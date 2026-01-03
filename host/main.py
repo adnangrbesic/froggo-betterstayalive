@@ -10,7 +10,7 @@ from host.pygame_ui import RetroRenderer
 # =====================================================
 # CONFIG
 # =====================================================
-GRID_SIZE, CELL_SIZE = 15, 40
+GRID_SIZE, CELL_SIZE = 15, 50
 SIDEBAR_WIDTH, MAX_STEPS = 350, 100
 WALLS, PALLETS = 35, 12
 WINDOW_WIDTH, WINDOW_HEIGHT = GRID_SIZE * CELL_SIZE + SIDEBAR_WIDTH, GRID_SIZE * CELL_SIZE
@@ -55,8 +55,16 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
+            if renderer.show_reset_dialog:
+                if renderer.btn_confirm.collidepoint(mouse_pos):
+                    game_service.reset_learning(WALLS, PALLETS)
+                    renderer.show_reset_dialog = False
+                elif renderer.btn_cancel.collidepoint(mouse_pos):
+                    renderer.show_reset_dialog = False
+                continue 
             if renderer.btn_pause.collidepoint(mouse_pos): paused = not paused
             elif renderer.btn_exit.collidepoint(mouse_pos): running = False
+            elif renderer.btn_reset.collidepoint(mouse_pos): renderer.show_reset_dialog = True
             elif renderer.slider_handle_rect.collidepoint(mouse_pos) or renderer.slider_rect.collidepoint(mouse_pos):
                 renderer.is_dragging_slider = True
         if event.type == pygame.MOUSEBUTTONUP: renderer.is_dragging_slider = False
@@ -85,6 +93,8 @@ while running:
         simulation_speed, 
         paused
     )
+    
+    renderer.draw_reset_dialog()
     pygame.display.flip()
 
 pygame.quit()
